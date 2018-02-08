@@ -122,6 +122,7 @@ void TextureManager::trim()
         [this](const detail::Texture& texture) {
             if (texture.use_count == 0)
             {
+                NOT_USED(this);
                 IF_DEVMODE(mem_used_ -= texture.size);
                 glDeleteTextures(1, &texture.name);
                 return true;
@@ -158,10 +159,9 @@ void TextureManager::upload(const Texture& texture,
             texture.width = width;
             texture.height = height;
             texture.size = width * height * 4;
-#if RAINBOW_DEVMODE
-            mem_used_ += texture.size;
-            update_usage();
-#endif
+            IF_DEVMODE(mem_used_ += texture.size);
+            IF_DEVMODE(update_usage());
+            NOT_USED(this);
         });
 }
 
@@ -186,10 +186,9 @@ void TextureManager::upload_compressed(const Texture& texture,
                     texture.width = width;
                     texture.height = height;
                     texture.size = size;
-#if RAINBOW_DEVMODE
-                    mem_used_ += texture.size;
-                    update_usage();
-#endif
+                    IF_DEVMODE(mem_used_ += texture.size);
+                    IF_DEVMODE(update_usage());
+                    NOT_USED(this);
                 });
 }
 

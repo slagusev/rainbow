@@ -24,8 +24,8 @@
 #elif defined(_WIN32)
 #   define RAINBOW_OS_WINDOWS
 #elif defined(__EMSCRIPTEN__)
-#   define RAINBOW_JS
 #   define RAINBOW_OS_UNIX
+#   define RAINBOW_WEB
 #endif
 
 // Platforms that make use of physical buttons (keyboards, gamepads, etc.)

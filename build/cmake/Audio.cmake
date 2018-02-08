@@ -1,6 +1,6 @@
 if(EMSCRIPTEN)
-  find_package(OpenAL REQUIRED)
-  target_link_libraries(rainbow ${OPENAL_LIBRARY})
+  set(EMCC_FLAGS "${EMCC_FLAGS} -s USE_OGG=1 -s USE_VORBIS=1")
+  target_link_libraries(rainbow openal)
 elseif(USE_FMOD_STUDIO)
   set(AUDIO_INCLUDE_DIRS ${LOCAL_LIBRARY}/FMOD/inc)
   if(WIN32)

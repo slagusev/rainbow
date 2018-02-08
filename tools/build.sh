@@ -15,7 +15,7 @@ fi
 function compile {
   case "$1" in
     "Emscripten")
-      make
+      emmake make
       ;;
     "Ninja")
       $ANALYZER ninja
@@ -39,7 +39,7 @@ fi
 
 case $1 in
   "--help")
-    echo "Syntax: $(basename $0) [analyze|android|clean|linux|mac|windows] [option ...]"
+    echo "Syntax: $(basename $0) [analyze|android|clean|linux|mac|web|windows] [option ...]"
     echo
     echo "Options:"
     echo "  -DUNIT_TESTS=1           Enable unit tests"
@@ -68,16 +68,6 @@ case $1 in
     rm -fr CMakeFiles CMakeScripts Debug MinSizeRel Rainbow.* Release RelWithDebInfo
     rm -f .ninja_* CMakeCache.txt Makefile {build,rules}.ninja cmake_install.cmake lib*.a rainbow*
     ;;
-  "emscripten")
-    EMSCRIPTEN=$(em-config EMSCRIPTEN_ROOT)
-    if [[ ! -d "$EMSCRIPTEN" ]]; then
-      echo "$0: Could not find Emscripten"
-      exit 1
-    fi
-    $cmake -DCMAKE_TOOLCHAIN_FILE="$EMSCRIPTEN/cmake/Modules/Platform/Emscripten.cmake" \
-           $args "$project_root" &&
-    compile Emscripten
-    ;;
   "help")
     $SHELL $0 --help
     ;;
@@ -90,6 +80,14 @@ case $1 in
     GENERATOR=${GENERATOR:-Xcode}
     $cmake $args -G "$GENERATOR" "$project_root" &&
     compile "$GENERATOR"
+    ;;
+  "web")
+    if [[ ! -d "$(em-config EMSCRIPTEN_ROOT)" ]]; then
+      echo "$0: Could not find Emscripten"
+      exit 1
+    fi
+    emcmake $cmake $args "$project_root" &&
+    compile Emscripten
     ;;
   "windows")
     GENERATOR=${GENERATOR:-Unix Makefiles}

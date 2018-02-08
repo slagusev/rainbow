@@ -353,7 +353,7 @@ endif()
 
 # Dynamic libraries
 include(${LOCAL_MODULE_PATH}/Audio.cmake)
-if(NOT ANDROID)
+if(NOT ANDROID AND NOT EMSCRIPTEN)
   find_package(OpenGL REQUIRED)
   target_link_libraries(rainbow ${OPENGL_ext_LIBRARY} ${OPENGL_gl_LIBRARY})
 endif()
@@ -370,6 +370,11 @@ if(USE_SPINE)
 endif()
 include(${LOCAL_MODULE_PATH}/zlib.cmake)
 include(${LOCAL_MODULE_PATH}/libpng.cmake)
+
+if(EMSCRIPTEN)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1 ${EMCC_FLAGS}")
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+endif()
 
 # Rainbow
 target_include_directories(
