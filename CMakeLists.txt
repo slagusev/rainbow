@@ -97,6 +97,8 @@ set(SOURCE_FILES
     src/Graphics/SpriteBatch.cpp
     src/Graphics/SpriteBatch.h
     src/Graphics/SpriteVertex.h
+    src/Graphics/TextLayout.cpp
+    src/Graphics/TextLayout.h
     src/Graphics/Texture.h
     src/Graphics/TextureAtlas.cpp
     src/Graphics/TextureAtlas.h
